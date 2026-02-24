@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neodomo | Smart Home - Automação Residencial</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- React & Babel for Single File Execution -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1E1E1F;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1E1E1F;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #EA5B0C;
+            border-radius: 4px;
+        }
+        .bg-custom-dark-1 { background-color: #1E1E1F; }
+        .bg-custom-dark-2 { background-color: #2D2D30; }
+        .bg-custom-dark-3 { background-color: #333336; }
+        .text-primary { color: #EA5B0C; }
+        .bg-primary { background-color: #EA5B0C; }
+        .border-primary { border-color: #EA5B0C; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- Logo Component ---
+        // --- Logo Component (AJUSTADO PARA NÃO CORTAR) ---
+        const Logo = ({ className = "h-25 w-auto" }) => (
+            <svg 
+                className={className} 
+                viewBox="0 0 1830 332" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+                preserveAspectRatio="xMidYMid meet" // Garante que o conteúdo caiba no box
+            >
+                <rect width="1830" height="332" fill="url(#pattern0_185_3)"/>
+                <defs>
+                    <pattern id="pattern0_185_3" patternContentUnits="objectBoundingBox" width="1" height="1">
+                        <use href="#image0_185_3" transform="scale(0.00240964 0.0140883)"/>
+                    </pattern>
+                    <image id="image0_185_3" width="332" height="57" href="data:image/png;base64,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" />
+                </defs>
+            </svg>
+        );
+
+        
+        // --- Navbar ---
+         const Navbar = () => (
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-[#1E1E1F]/90 backdrop-blur-md border-b border-white/5">
+                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+                    <div className="flex items-center gap-6"> { /*Diminuído gap para dar espaço à logo*/ }
+                        <div className="w-56 md:w-64 h-12"> {/* Container com largura definida para a logo larga*/ }
+                            <Logo />
+                        </div>
+                        <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-gray-400">
+                            <a href="#" className="hover:text-[#EA5B0C] transition-colors whitespace-nowrap">Soluções</a>
+                            <a href="#" className="hover:text-[#EA5B0C] transition-colors whitespace-nowrap">Tecnologia</a>
+                            <a href="#" className="hover:text-[#EA5B0C] transition-colors whitespace-nowrap">Portfólio</a>
+                            <a href="#" className="hover:text-[#EA5B0C] transition-colors whitespace-nowrap">Agendar Consultoria</a>
+                        </div>
+                    </div>
+                    <button className="px-6 py-2.5 bg-[#EA5B0C] text-white text-sm font-bold rounded-md hover:bg-[#ff6d1a] transition-all duration-300 btn-glow shadow-lg shadow-[#EA5B0C]/20 whitespace-nowrap">
+                        Orçamento Express
+                    </button>
+                </div>
+            </nav>
+        ); 
+
+
+        // --- Hero Component ---
+        const Hero = () => (
+            <section className="relative pt-32 pb-20 px-6">
+                <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-end">
+                    <div>
+                        <h1 className="text-6xl md:text-7xl font-bold leading-tight tracking-tight mb-8">
+                            Sua casa, <br />
+                            <span className="text-[#EA5B0C]">inteligente por natureza</span>
+                        </h1>
+                        <button className="px-8 py-4 bg-[#EA5B0C] text-white font-bold rounded-sm hover:bg-[#ff6d1a] transition-colors shadow-lg shadow-[#EA5B0C]/20 uppercase tracking-widest text-sm">
+                            Iniciar Projeto
+                        </button>
+                    </div>
+                    <div className="text-gray-400 text-lg max-w-md pb-4 border-l border-[#EA5B0C] pl-6 leading-relaxed">
+                        Elevamos o conceito de morar. Integramos tecnologia de ponta para criar ambientes que se adaptam ao seu estilo de vida, com conforto, segurança e sofisticação.
+                    </div>
+                </div>
+
+                <div className="max-w-7xl mx-auto mt-12 overflow-hidden rounded-xl shadow-2xl">
+                    <div className="relative group">
+                        <img 
+                            src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&q=80&w=2070" 
+                            alt="Interior Residencial Inteligente" 
+                            className="w-full h-[500px] md:h-[600px] object-cover transition-transform duration-1000 group-hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#1E1E1F] via-transparent to-transparent opacity-60"></div>
+                        <div className="absolute bottom-10 left-10 p-6 bg-[#1E1E1F]/80 backdrop-blur-md rounded-lg border border-white/10 hidden md:block">
+                            <p className="text-[#EA5B0C] font-bold text-xs uppercase mb-1">Destaque</p>
+                            <h3 className="text-xl font-bold">Cenários de Iluminação por Voz</h3>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        // --- ServiceFilters Component ---
+        const ServiceFilters = () => {
+            const [activeTab, setActiveTab] = useState('Residencial');
+            const tabs = ['Residencial', 'Corporativo', 'Projetos Especiais', 'Infraestrutura'];
+
+            /*return (
+                <div className="max-w-7xl mx-auto px-6 -mt-16 relative z-10">
+                    <div className="bg-[#2D2D30] p-6 rounded-xl border border-white/5 shadow-2xl">
+                        <div className="flex gap-1 mb-6 border-b border-white/5 pb-4 overflow-x-auto whitespace-nowrap">
+                            {tabs.map(tab => (
+                                <button
+                                    key={tab}
+                                    onClick={() => setActiveTab(tab)}
+                                    className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
+                                        activeTab === tab 
+                                        ? 'bg-[#EA5B0C] text-white' 
+                                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                    }`}
+                                >
+                                    {tab}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                            {[
+                                { label: 'Ambiente', val: 'Home Cinema / Sala' },
+                                { label: 'Interface', val: 'Voz & Aplicativo' },
+                                { label: 'Conectividade', val: 'Rede Mesh High Speed' },
+                                { label: 'Nível', val: 'Premium' }
+                            ].map((item, i) => (
+                                <div key={i} className="relative">
+                                    <label className="text-[10px] uppercase text-gray-500 font-bold mb-1 block">{item.label}</label>
+                                    <div className="flex items-center justify-between px-4 py-3 bg-[#1E1E1F] rounded-lg border border-white/5 cursor-pointer hover:border-[#EA5B0C]/50 transition-colors">
+                                        <span className="text-sm">{item.val}</span>
+                                        <i data-lucide="chevron-down" className="w-4 h-4 text-gray-500"></i>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="flex items-center justify-between mt-6">
+                            <button className="flex items-center gap-2 text-xs font-bold text-gray-400 hover:text-[#EA5B0C] transition-colors uppercase tracking-widest">
+                                <i data-lucide="sliders-horizontal" className="w-3.5 h-3.5"></i>
+                                MAIS FILTROS
+                            </button>
+                            <div className="flex gap-4">
+                                <button className="text-xs font-bold text-gray-400 hover:text-white transition-colors uppercase tracking-widest">
+                                    LIMPAR
+                                </button>
+                                <button className="px-8 py-3 bg-white text-black font-bold rounded-md hover:bg-[#EA5B0C] hover:text-white transition-all flex items-center gap-2 uppercase text-xs tracking-widest">
+                                    <i data-lucide="search" className="w-4 h-4"></i>
+                                    VER SOLUÇÕES
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );*/
+        };
+
+        // --- ServiceGrid Component ---
+        const ServiceGrid = () => {
+            const services = [
+                {
+                    title: 'Rotinas Inteligentes',
+                    category: 'Sensores',
+                    location: 'Cenários por Presença e Luz',
+                    imageUrl: 'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&q=80&w=600',
+                    specs: [
+                        { label: 'Sensores', icon: 'zap' },
+                        { label: 'PIR/LUX', icon: 'eye' },
+                        { label: 'Lógica IF', icon: 'settings-2' },
+                        { label: '100% Aut.', icon: 'cpu' }
+                    ]
+                },
+                {
+                    title: 'Controle de Luz e Voz',
+                    category: 'Automação',
+                    location: 'Iluminação, Tomadas e Clima',
+                    imageUrl: 'https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?auto=format&fit=crop&q=80&w=600',
+                    specs: [
+                        { label: 'Alexa/Siri', icon: 'mic' },
+                        { label: 'Dimmer', icon: 'sun' },
+                        { label: 'App Nativo', icon: 'smartphone' },
+                        { label: 'Multi-zona', icon: 'layers' }
+                    ]
+                },
+                {
+                    title: 'Sonorização Ambiente',
+                    category: 'Áudio Hi-Fi',
+                    location: 'Música em Múltiplas Zonas',
+                    imageUrl: 'https://images.unsplash.com/photo-1707722197693-b2e956cbe9ce?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                    specs: [
+                        { label: 'Spotify', icon: 'music' },
+                        { label: 'Hi-Fi', icon: 'speaker' },
+                        { label: 'Bluetooth', icon: 'bluetooth' },
+                        { label: 'Wireless', icon: 'rss' }
+                    ]
+                },
+                {
+                    title: 'Home Cinema Premium',
+                    category: 'Cinema',
+                    location: 'Experiência 4K Imersiva',
+                    imageUrl: 'https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&q=80&w=600',
+                    specs: [
+                        { label: '4K/8K', icon: 'tv' },
+                        { label: 'Dolby At.', icon: 'clapperboard' },
+                        { label: 'Acústica', icon: 'waves' },
+                        { label: 'Imersão', icon: 'eye' }
+                    ]
+                },
+                {
+                    title: 'Redes e Internet Mesh',
+                    category: 'Infraestrutura',
+                    location: 'Wi-Fi 6 de Alta Performance',
+                    imageUrl: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&q=80&w=600',
+                    specs: [
+                        { label: 'Wi-Fi 6', icon: 'wifi' },
+                        { label: 'Gigabit', icon: 'activity' },
+                        { label: 'Seguro', icon: 'lock' },
+                        { label: 'Mesh', icon: 'share-2' }
+                    ]
+                },
+                {
+                    title: 'CFTV & Segurança',
+                    category: 'Monitoramento',
+                    location: 'Proteção Inteligente 24/7',
+                    imageUrl: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=600',
+                    specs: [
+                        { label: 'Cloud', icon: 'cloud' },
+                        { label: 'Notif.', icon: 'bell' },
+                        { label: '4K Cam', icon: 'video' },
+                        { label: '24/7', icon: 'shield' }
+                    ]
+                }
+            ];
+
+            return (
+                <section className="max-w-7xl mx-auto px-6 py-24">
+                    <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+                        <div>
+                            <h2 className="text-4xl font-bold mb-4">Soluções Completas</h2>
+                            <p className="text-gray-400 max-w-lg">
+                                Transformamos sua rotina através de tecnologias que trabalham para o seu bem-estar e conforto.
+                            </p>
+                        </div>
+                        <button className="mt-6 md:mt-0 text-[#EA5B0C] font-bold border-b border-[#EA5B0C] pb-1 hover:text-white hover:border-white transition-all uppercase text-xs tracking-widest">
+                            Explorar Portfólio
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {services.map((s, i) => (
+                            <div key={i} className="group cursor-pointer">
+                                <div className="relative aspect-[4/3] overflow-hidden rounded-lg mb-4 bg-[#333336]">
+                                    <img src={s.imageUrl} alt={s.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"/>
+                                    <div className="absolute top-4 left-4 px-3 py-1 bg-[#EA5B0C] text-white text-[10px] font-bold rounded uppercase tracking-wider">
+                                        {s.category}
+                                    </div>
+                                </div>
+                                <div className="flex justify-between items-start mb-2">
+                                    <h3 className="text-xl font-bold">{s.title}</h3>
+                                    <span className="text-[#EA5B0C] font-bold text-xs uppercase tracking-widest">SOB CONSULTA</span>
+                                </div>
+                                <p className="text-gray-500 text-xs mb-4 uppercase tracking-wider font-medium">{s.location}</p>
+                                
+                                {/* Substitua o bloco antigo das specs por este: */}
+                            <div className="grid grid-cols-4 gap-2 pt-4 border-t border-white/5">
+                                {s.specs.map((spec, idx) => (
+                                    <div key={idx} className="flex flex-col items-center gap-1">
+                                        <i data-lucide={spec.icon} className="w-3.5 h-3.5 text-gray-500"></i>
+                                        <span className="text-[10px] text-gray-400 font-bold uppercase whitespace-nowrap">
+                                            {spec.label}
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        };
+
+        // --- ProcessSection Component ---
+        const ProcessSection = () => (
+            <section className="bg-[#2D2D30] py-24 px-6 overflow-hidden">
+                <div className="max-w-7xl mx-auto">
+                    <div className="grid md:grid-cols-2 gap-12 items-center mb-20">
+                        <div>
+                            <h2 className="text-4xl font-bold mb-6">A Jornada para sua <br /> Casa Inteligente</h2>
+                            <p className="text-gray-400 leading-relaxed">
+                                Nosso processo é 100% consultivo. Do diagnóstico inicial à entrega das chaves com tudo funcionando por voz.
+                            </p>
+                        </div>
+                        <div className="text-gray-500 text-sm leading-relaxed max-w-sm ml-auto text-right border-r-2 border-[#EA5B0C] pr-6">
+                            Projeto executivo de rede, cabeamento estruturado e treinamento de uso para toda a família.
+                        </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-8 bg-[#1E1E1F] rounded-2xl p-8 border border-white/5">
+                        <div className="flex flex-col justify-center max-w-md">
+                            <h3 className="text-2xl font-bold mb-4">Projeto Personalizado</h3>
+                            <p className="text-gray-400 mb-8 leading-relaxed">
+                                Criamos um ecossistema único para você. Controle persianas, ar-condicionado, som e luz com apenas uma frase ou um toque no smartphone, de qualquer lugar do mundo.
+                            </p>
+                            <button className="flex items-center gap-2 px-6 py-3 border border-white/20 rounded hover:bg-white hover:text-black transition-all group w-fit uppercase text-xs tracking-widest font-bold">
+                                Agendar Visita Grátis
+                                <i data-lucide="arrow-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                            </button>
+                        </div>
+                        <div className="relative group overflow-hidden rounded-xl h-[400px]">
+                            <img 
+                                src="https://images.unsplash.com/photo-1560185127-6ed189bf02f4?auto=format&fit=crop&q=80&w=800" 
+                                alt="Cenário de Automação" 
+                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-r from-[#1E1E1F] via-transparent to-transparent opacity-40"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+
+        // --- Footer Component ---
+        const Footer = () => (
+            <footer className="bg-[#1E1E1F] border-t border-white/5 py-20 px-6">
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                    <div className="col-span-1 md:col-span-1">
+                        <Logo className="mb-8" />
+                        <p className="text-gray-400 text-sm leading-relaxed">
+                            Especialistas em tornar residências mais eficientes, seguras e conectadas. O futuro do morar começa aqui.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 className="font-bold mb-6 text-sm uppercase tracking-widest text-gray-500">Serviços</h4>
+                        <ul className="space-y-4 text-sm text-gray-400">
+                            <li><a href="#" className="hover:text-[#EA5B0C] transition-colors">Iluminação</a></li>
+                            <li><a href="#" className="hover:text-[#EA5B0C] transition-colors">Home Cinema</a></li>
+                            <li><a href="#" className="hover:text-[#EA5B0C] transition-colors">Som Ambiente</a></li>
+                            <li><a href="#" className="hover:text-[#EA5B0C] transition-colors">Segurança</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 className="font-bold mb-6 text-sm uppercase tracking-widest text-gray-500">Explore</h4>
+                        <ul className="space-y-4 text-sm text-gray-400">
+                            <li><a href="#" className="hover:text-[#EA5B0C] transition-colors">Projetos</a></li>
+                            <li><a href="#" className="hover:text-[#EA5B0C] transition-colors">Showroom</a></li>
+                            <li><a href="#" className="hover:text-[#EA5B0C] transition-colors">Smart Life</a></li>
+                            
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 className="font-bold mb-6 text-sm uppercase tracking-widest text-gray-500">Social</h4>
+                        <div className="flex gap-4">
+                            {['instagram', 'linkedin', 'facebook', 'twitter'].map(social => (
+                                <a key={social} href="#" className="w-10 h-10 rounded-full bg-[#2D2D30] flex items-center justify-center hover:bg-[#EA5B0C] transition-colors">
+                                    <i data-lucide={social} className="w-5 h-5"></i>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between text-[10px] text-gray-600 uppercase tracking-widest font-bold">
+                    <span>© 2026 Neodomo Smart Home. Transformando lares.</span>
+                    <div className="flex gap-6 mt-4 md:mt-0">
+                        <a href="#" className="hover:text-white transition-colors">Privacidade</a>
+                        <a href="#" className="hover:text-white transition-colors">Termos</a>
+                    </div>
+                </div>
+            </footer>
+        );
+
+        // --- Main App Component ---
+        const App = () => {
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, []);
+
+            return (
+                <div className="min-h-screen bg-[#1E1E1F] text-white selection:bg-[#EA5B0C] selection:text-white">
+                    <Navbar />
+                    <main>
+                        <Hero />
+                        <ServiceFilters />
+                        
+                        <section className="max-w-7xl mx-auto px-6 pt-32 pb-8">
+                           <div className="grid md:grid-cols-2 gap-12 items-end">
+                             <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+                               Onde a tecnologia <br />
+                               <span className="text-gray-500">simplifica sua vida</span>
+                             </h2>
+                             <p className="text-gray-400 text-sm max-w-sm pb-2 leading-relaxed">
+                               Nossos projetos focam na harmonia invisível entre automação e arquitetura. Menos botões, mais experiências.
+                             </p>
+                           </div>
+                        </section>
+
+                        <ServiceGrid />
+                        <ProcessSection />
+
+                        <section className="max-w-7xl mx-auto px-6 py-24">
+                          <div className="bg-[#EA5B0C] rounded-3xl p-12 text-center relative overflow-hidden group shadow-2xl">
+                            <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <h2 className="text-4xl md:text-5xl font-bold mb-8 relative z-10">
+                              Pronto para viver o futuro hoje?
+                            </h2>
+                            <p className="text-white/80 max-w-xl mx-auto mb-10 text-lg relative z-10">
+                              Transforme sua residência em um ambiente inteligente. Fale agora com nossos consultores especialistas.
+                            </p>
+                            <button className="px-12 py-5 bg-white text-black font-extrabold rounded-full hover:scale-105 transition-transform shadow-2xl relative z-10 uppercase text-sm tracking-widest">
+                              Solicitar Orçamento Grátis
+                            </button>
+                          </div>
+                        </section>
+                    </main>
+                    <Footer />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
