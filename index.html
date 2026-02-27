@@ -112,8 +112,17 @@
                             Sua casa, <br />
                             <span className="text-[#EA5B0C]">inteligente por natureza</span>
                         </h1>
-                        <button className="px-8 py-4 bg-[#EA5B0C] text-white font-bold rounded-sm hover:bg-[#ff6d1a] transition-colors shadow-lg shadow-[#EA5B0C]/20 uppercase tracking-widest text-sm">
-                            Iniciar Projeto
+                        <button 
+                          onClick={() => {
+                            const telefone = "5511999999999";
+                            const mensagem = "Olá, gostaria de um iniciar um projeto";
+                            const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+                            
+                            window.open(url, '_blank');
+                          }}
+                          className="px-6 py-2.5 bg-[#EA5B0C] text-white text-sm font-bold rounded-md hover:bg-[#ff6d1a] transition-all duration-300 btn-glow shadow-lg shadow-[#EA5B0C]/20 whitespace-nowrap"
+                        >
+                          Orçamento Express
                         </button>
                     </div>
                     <div className="text-gray-400 text-lg max-w-md pb-4 border-l border-[#EA5B0C] pl-6 leading-relaxed">
