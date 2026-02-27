@@ -86,8 +86,17 @@
                             <a href="#" className="hover:text-[#EA5B0C] transition-colors whitespace-nowrap">Agendar Consultoria</a>
                         </div>
                     </div>
-                    <button className="px-6 py-2.5 bg-[#EA5B0C] text-white text-sm font-bold rounded-md hover:bg-[#ff6d1a] transition-all duration-300 btn-glow shadow-lg shadow-[#EA5B0C]/20 whitespace-nowrap">
-                        Orçamento Express
+                    <button 
+                      onClick={() => {
+                        const telefone = "5511999999999";
+                        const mensagem = "Olá, gostaria de um orçamento express!";
+                        const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+                        
+                        window.open(url, '_blank');
+                      }}
+                      className="px-6 py-2.5 bg-[#EA5B0C] text-white text-sm font-bold rounded-md hover:bg-[#ff6d1a] transition-all duration-300 btn-glow shadow-lg shadow-[#EA5B0C]/20 whitespace-nowrap"
+                    >
+                      Orçamento Express
                     </button>
                 </div>
             </nav>
