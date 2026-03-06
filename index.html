@@ -295,7 +295,16 @@
                                 Transformamos sua rotina através de tecnologias que trabalham para o seu bem-estar e conforto.
                             </p>
                         </div>
-                        <button className="mt-6 md:mt-0 text-[#EA5B0C] font-bold border-b border-[#EA5B0C] pb-1 hover:text-white hover:border-white transition-all uppercase text-xs tracking-widest">
+                        <button 
+                            onClick={() => {
+                                const telefone = "5531996890179";
+                                const mensagem = "Olá, gostaria de um orçamento express!";
+                                const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+                                
+                                window.open(url, '_blank');
+                            }}
+                            className="mt-6 md:mt-0 text-[#EA5B0C] font-bold border-b border-[#EA5B0C] pb-1 hover:text-white hover:border-white transition-all uppercase text-xs tracking-widest"
+                            >
                             Explorar Portfólio
                         </button>
                     </div>
