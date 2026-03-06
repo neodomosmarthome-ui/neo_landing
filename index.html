@@ -296,13 +296,7 @@
                             </p>
                         </div>
                         <button 
-                            onClick={() => {
-                                const telefone = "5531996890179";
-                                const mensagem = "Olá, gostaria de um orçamento express!";
-                                const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
-                                
-                                window.open(url, '_blank');
-                            }}
+                          
                             className="mt-6 md:mt-0 text-[#EA5B0C] font-bold border-b border-[#EA5B0C] pb-1 hover:text-white hover:border-white transition-all uppercase text-xs tracking-widest"
                             >
                             Explorar Portfólio
@@ -364,9 +358,18 @@
                             <p className="text-gray-400 mb-8 leading-relaxed">
                                 Criamos um ecossistema único para você. Controle persianas, ar-condicionado, som e luz com apenas uma frase ou um toque no smartphone, de qualquer lugar do mundo.
                             </p>
-                            <button className="flex items-center gap-2 px-6 py-3 border border-white/20 rounded hover:bg-white hover:text-black transition-all group w-fit uppercase text-xs tracking-widest font-bold">
+                            <button 
+                                  onClick={() => {
+                                    const telefone = "5531996890179";
+                                    const mensagem = "Olá, gostaria de agendar uma visita!";
+                                    const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+                                
+                                window.open(url, '_blank');
+                            }}
+                                className="flex items-center gap-2 px-6 py-3 border border-white/20 rounded hover:bg-white hover:text-black transition-all group w-fit uppercase text-xs tracking-widest font-bold">
                                 
                                 <i data-lucide="arrow-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                                Agendar Visita
                             </button>
                         </div>
                         <div className="relative group overflow-hidden rounded-xl h-[400px]">
