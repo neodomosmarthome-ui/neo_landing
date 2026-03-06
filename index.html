@@ -88,7 +88,7 @@
                     </div>
                     <button 
                       onClick={() => {
-                        const telefone = "5511999999999";
+                        const telefone = "5531996890179";
                         const mensagem = "Olá, gostaria de um orçamento express!";
                         const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
                         
@@ -114,7 +114,7 @@
                         </h1>
                         <button 
                           onClick={() => {
-                            const telefone = "5511999999999";
+                            const telefone = "5531996890179";
                             const mensagem = "Olá, gostaria de um iniciar um projeto";
                             const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
                             
@@ -356,7 +356,12 @@
                                 Criamos um ecossistema único para você. Controle persianas, ar-condicionado, som e luz com apenas uma frase ou um toque no smartphone, de qualquer lugar do mundo.
                             </p>
                             <button className="flex items-center gap-2 px-6 py-3 border border-white/20 rounded hover:bg-white hover:text-black transition-all group w-fit uppercase text-xs tracking-widest font-bold">
-                                Agendar Visita Grátis
+                                onClick={() => {
+                                    const telefone = "5531996890179";
+                                    const mensagem = "Olá, gostaria de agendar uma visita";
+                                    const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+                            
+                                    window.open(url, '_blank');
                                 <i data-lucide="arrow-right" className="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                             </button>
                         </div>
