@@ -473,7 +473,15 @@
                             <p className="text-white/80 max-w-xl mx-auto mb-10 text-lg relative z-10">
                               Transforme sua residência em um ambiente inteligente. Fale agora com nossos consultores especialistas.
                             </p>
-                            <button className="px-12 py-5 bg-white text-black font-extrabold rounded-full hover:scale-105 transition-transform shadow-2xl relative z-10 uppercase text-sm tracking-widest">
+                            <button 
+                                onClick={() => {
+                                    const telefone = "5531996890179";
+                                    const mensagem = "Olá, gostaria de solicitar um orçamento grátis!";
+                                    const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+                                
+                                window.open(url, '_blank');
+                                }}
+                                className="px-12 py-5 bg-white text-black font-extrabold rounded-full hover:scale-105 transition-transform shadow-2xl relative z-10 uppercase text-sm tracking-widest">
                               Solicitar Orçamento Grátis
                             </button>
                           </div>
